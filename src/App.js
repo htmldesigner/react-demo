@@ -1,18 +1,19 @@
 import React, {useState} from "react";
 import PostList from "./components/PostList";
 import './styles/App.css'
-import MyButton from "./components/UI/button/MyButton";
-import MyInput from "./components/UI/input/MyInput";
 import PostForm from "./components/PostForm";
+import MySelect from "./components/UI/select/MySelect";
 
 function App() {
 
   const [posts, setPosts] = useState([
-    {id: 1, title: 'Content1', desc: 'description1'},
-    {id: 2, title: 'Content2', desc: 'description2'},
-    {id: 3, title: 'Content3', desc: 'description3'}
+    {id: 1, title: 'aa', desc: 'rr'},
+    {id: 2, title: 'dd', desc: 'ss'},
+    {id: 3, title: 'zz', desc: 'vv'}
 
   ])
+
+    const [selectedSort, setSelectedSort] = useState('')
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost])
@@ -22,10 +23,27 @@ function App() {
     setPosts(posts.filter(p => p.id !== post.id))
   }
 
+  const sortPosts = (sort) => {
+      setSelectedSort(sort)
+      console.log(selectedSort)
+      setPosts([...posts].sort((a, b) => {return a[sort].localeCompare(b[sort])}))
+  }
 
   return (
     <div className="App">
       <PostForm create={createPost}/>
+      <hr style={{margin: '15px'}}/>
+      <div>
+        <MySelect
+            value={selectedSort}
+            onChange={sortPosts}
+            defaultValue='Сотрировка'
+            options={[
+                {value: 'title', name: 'по названию'},
+                {value: 'desc', name: 'по описанию'}
+            ]}>
+        </MySelect>
+      </div>
       {posts.length
       ? <PostList remove={removePost} posts={posts} title='Список'/>
       : <h1 style={{textAlign: 'center'}}>Нет постов</h1>
