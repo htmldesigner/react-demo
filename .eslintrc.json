@@ -19,6 +19,7 @@
         "react", "prettier"
     ],
     "rules": {
+        "indent": ["error", 2],
         "react/prop-types": "off",
         "react/jsx-props-no-spreading": "off"
     }
