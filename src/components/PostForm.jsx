@@ -8,8 +8,10 @@ const PostForm = ({ create }) => {
   const addNewPost = (e) => {
     e.preventDefault();
     const newPost = { ...post, id: Date.now() };
-    create(newPost);
-    setPost({ title: "", desc: "" });
+    if (post.title.length && post.desc.length) {
+      create(newPost);
+      setPost({ title: "", desc: "" });
+    }
   };
 
   return (
