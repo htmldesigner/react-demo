@@ -19,7 +19,7 @@ const PostFilter = ({ filter, setFilter }) => {
         defaultValue="Сотрировка"
         options={[
           { value: "title", name: "по названию" },
-          { value: "desc", name: "по описанию" },
+          { value: "body", name: "по описанию" },
         ]}
       />
     </div>

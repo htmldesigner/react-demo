@@ -3,14 +3,14 @@ import MyInput from "./UI/input/MyInput";
 import MyButton from "./UI/button/MyButton";
 
 const PostForm = ({ create }) => {
-  const [post, setPost] = useState({ title: "", desc: "" });
+  const [post, setPost] = useState({ title: "", body: "" });
 
   const addNewPost = (e) => {
     e.preventDefault();
     const newPost = { ...post, id: Date.now() };
-    if (post.title.length && post.desc.length) {
+    if (post.title.length && post.body.length) {
       create(newPost);
-      setPost({ title: "", desc: "" });
+      setPost({ title: "", body: "" });
     }
   };
 
@@ -25,10 +25,10 @@ const PostForm = ({ create }) => {
         placeholder="title"
       />
       <MyInput
-        value={post.desc}
+        value={post.body}
         type="text"
         onChange={(ev) => {
-          setPost({ ...post, desc: ev.target.value });
+          setPost({ ...post, body: ev.target.value });
         }}
         placeholder="description"
       />

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import PostList from "./components/PostList";
 import "./styles/App.css";
 import PostForm from "./components/PostForm";
@@ -6,19 +6,27 @@ import PostFilter from "./components/PostFilter";
 import MyModal from "./components/UI/MyModal/MyModal";
 import MyButton from "./components/UI/button/MyButton";
 import { usePost } from "./hooks/usePost";
+import PostService from "./API/PostService";
+import Loader from "./components/UI/loader/Loader";
 
 function App() {
-  const [posts, setPosts] = useState([
-    { id: 1, title: "G", desc: "Z" },
-    { id: 2, title: "Z", desc: "C" },
-    { id: 3, title: "A", desc: "S" },
-    { id: 4, title: "F", desc: "f" },
-  ]);
+  const [posts, setPosts] = useState([]);
 
   const [filter, setFilter] = useState({ sort: "", query: "" });
   const [modal, setModal] = useState(false);
-
   const sortedAndSearchedPosts = usePost(posts, filter.sort, filter.query);
+  const [isPostsLoadaing, setIsPostsLoading] = useState(false);
+
+  async function fetchPosts() {
+    setIsPostsLoading(true);
+    const result = await PostService.getAll();
+    setPosts(result);
+    setIsPostsLoading(false);
+  }
+
+  useEffect(() => {
+    fetchPosts();
+  }, []);
 
   const createPost = (newPost) => {
     setPosts([...posts, newPost]);
@@ -39,11 +47,16 @@ function App() {
 
       <hr style={{ margin: "15px" }} />
       <PostFilter filter={filter} setFilter={setFilter} />
-      <PostList
-        remove={removePost}
-        posts={sortedAndSearchedPosts}
-        title="Список"
-      />
+
+      {isPostsLoadaing ? (
+        <Loader />
+      ) : (
+        <PostList
+          remove={removePost}
+          posts={sortedAndSearchedPosts}
+          title="Список"
+        />
+      )}
     </div>
   );
 }
